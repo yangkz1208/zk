@@ -3,68 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026中考倒计时</title>
+    <title>2026 中考倒计时</title>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f2f5;
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
             font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            margin: 0;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .container {
+
+        /* 视频背景 */
+        #bg-video {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover; z-index: -1;
+        }
+
+        /* 通用玻璃容器样式 */
+        .glass-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            color: white;
             text-align: center;
-            background: white;
             padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
-        h1 { color: #333; font-size: 1.5rem; margin-bottom: 10px; }
-        #days {
-            font-size: 6rem;
-            font-weight: 800;
-            color: #ff4757;
-            margin: 10px 0;
-            line-height: 1;
+
+        /* 主容器 */
+        .container {
+            padding: 50px 80px;
+            margin-bottom: 30px;
         }
-        .label { color: #666; font-size: 1.5rem; }
+
+        h1 { font-size: 1.8rem; margin-bottom: 10px; font-weight: 400; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        #days { font-size: 8rem; font-weight: 900; margin: 10px 0; text-shadow: 0 4px 10px rgba(0,0,0,0.5); letter-spacing: -2px; }
+        .label { font-size: 1.5rem; letter-spacing: 2px; opacity: 0.9; }
+
+        /* 诗词部分 */
+        #poem-section {
+            max-width: 600px;
+            padding: 20px 40px;
+            margin-top: 20px;
+        }
+        .poem-title { font-size: 1rem; opacity: 0.7; margin-bottom: 10px; }
+        .poem-content { font-size: 1.3rem; font-weight: 600; line-height: 1.6; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>距离 2026 年中考还有：</h1>
+    <video id="bg-video" autoplay muted loop playsinline>
+        <source src="v-30.mp4" type="video/mp4">
+    </video>
+
+    <div class="glass-box container">
+        <h1>距离 2026 年中考还有</h1>
         <div id="days">--</div>
-        <div class="label">天</div>
+        <div class="label">Days</div>
+    </div>
+
+    <div id="poem-section" class="glass-box">
+        <div class="poem-title" id="p-title">加载中...</div>
+        <div class="poem-content" id="p-content">加载中...</div>
     </div>
 
     <script>
-        // 设置中考目标日期为 2026年6月20日
+        // 1. 倒计时逻辑
         const targetDate = new Date("2026-06-20T00:00:00");
-        
         function updateCountdown() {
             const now = new Date();
-            // 计算毫秒差
             const diff = targetDate - now;
-            
-            // 计算天数 (向上取整，不足一天按一天算)
             const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-            
             const displayElement = document.getElementById("days");
-            
-            if (days > 0) {
-                displayElement.innerText = days;
-            } else if (days === 0) {
-                displayElement.innerText = "今日";
-            } else {
-                displayElement.innerText = "考试已结束";
-            }
+            if (days > 0) displayElement.innerText = days;
+            else if (days === 0) displayElement.innerText = "今日";
+            else displayElement.innerText = "圆满完成";
         }
-
-        // 页面加载后立即更新
         updateCountdown();
+
+        // 2. 每日诗词逻辑
+        const poems = [
+            { title: "《行路难》", content: "长风破浪会有时，直挂云帆济沧海。" },
+            { title: "《劝学》", content: "锲而不舍，金石可镂。" },
+            { title: "《将进酒》", content: "天生我材必有用，千金散尽还复来。" },
+            { title: "《冬夜读书示子聿》", content: "纸上得来终觉浅，绝知此事要躬行。" },
+            { title: "《送杜少府之任蜀州》", content: "海内存知己，天涯若比邻。" },
+            { title: "《观沧海》", content: "日月之行，若出其中；星汉灿烂，若出其里。" },
+            { title: "《赠从弟》", content: "不积跬步，无以至千里；不积小流，无以成江海。" }
+        ];
+
+        function loadPoem() {
+            const randomIndex = Math.floor(Math.random() * poems.length);
+            const poem = poems[randomIndex];
+            document.getElementById('p-title').innerText = `—— ${poem.title}`;
+            document.getElementById('p-content').innerText = poem.content;
+        }
+        loadPoem();
     </script>
 </body>
 </html>
