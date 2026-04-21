@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026中考倒计时</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f2f5;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        h1 { color: #333; font-size: 1.5rem; margin-bottom: 10px; }
+        #days {
+            font-size: 6rem;
+            font-weight: 800;
+            color: #ff4757;
+            margin: 10px 0;
+            line-height: 1;
+        }
+        .label { color: #666; font-size: 1.5rem; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>距离 2026 年中考还有：</h1>
+        <div id="days">--</div>
+        <div class="label">天</div>
+    </div>
+
+    <script>
+        // 设置中考目标日期为 2026年6月20日
+        const targetDate = new Date("2026-06-20T00:00:00");
+        
+        function updateCountdown() {
+            const now = new Date();
+            // 计算毫秒差
+            const diff = targetDate - now;
+            
+            // 计算天数 (向上取整，不足一天按一天算)
+            const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            
+            const displayElement = document.getElementById("days");
+            
+            if (days > 0) {
+                displayElement.innerText = days;
+            } else if (days === 0) {
+                displayElement.innerText = "今日";
+            } else {
+                displayElement.innerText = "考试已结束";
+            }
+        }
+
+        // 页面加载后立即更新
+        updateCountdown();
+    </script>
+</body>
+</html>
